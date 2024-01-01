@@ -12,6 +12,12 @@ const OrdersPage = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
 
+  const { isLoading, error, data } = useQuery({
+    queryKey: ["orders"],
+    queryFn: () =>
+      fetch("http://localhost:3000/api/orders").then((res) => res.json()),
+  });
+
   const mutation = useMutation({
     mutationFn: ({ id, status }: { id: string; status: string }) => {
       return fetch(`http://localhost:3000/api/orders/${id}`, {
@@ -37,12 +43,6 @@ const OrdersPage = () => {
     router.push("/");
     return null; // You can also return a loading indicator or message here
   }
-
-  const { isLoading, error, data } = useQuery({
-    queryKey: ["orders"],
-    queryFn: () =>
-      fetch("http://localhost:3000/api/orders").then((res) => res.json()),
-  });
 
   if (isLoading) return "Loading...";
 

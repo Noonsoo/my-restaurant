@@ -1,28 +1,25 @@
-import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "@/utils/connect";
+import { NextResponse } from "next/server";
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  const {
-    query: { intentId },
-  } = req;
-
-  if (req.method !== "PUT") {
-    return res.status(405).end(); // Method Not Allowed
-  }
+export const PUT = async ({ params }: { params: { intentId: string } }) => {
+  const { intentId } = params;
 
   try {
     await prisma.order.update({
       where: {
-        intent_id: intentId as string, // Type casting
+        intent_id: intentId,
       },
       data: { status: "Being prepared!" },
     });
-    return res.status(200).json({ message: "Order has been updated" });
+    return new NextResponse(
+      JSON.stringify({ message: "Order has been updated" }),
+      { status: 200 }
+    );
   } catch (err) {
-    console.error(err);
-    return res.status(500).json({ message: "Something went wrong!" });
+    console.log(err);
+    return new NextResponse(
+      JSON.stringify({ message: "Something went wrong!" }),
+      { status: 500 }
+    );
   }
-}
+};

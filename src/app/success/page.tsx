@@ -6,7 +6,7 @@ import ConfettiExplosion from "react-confetti-explosion";
 const SuccessPage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const payment_intent = searchParams.get("payment_intent");
+  const payment_intent = searchParams!.get("payment_intent");
 
   useEffect(() => {
     const makeRequest = async () => {

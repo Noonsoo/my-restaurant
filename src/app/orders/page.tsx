@@ -13,6 +13,7 @@ import React from "react";
 import { toast } from "react-toastify";
 
 const OrdersPage = () => {
+  const query = useQuery({});
   const { isLoading, data } = useQuery({
     queryKey: ["orders"],
 

@@ -7,16 +7,18 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import { toast } from "react-toastify";
 
-const OrdersPage = () => {
-  const { data: session, status } = useSession();
-  const queryClient = useQueryClient();
-  const router = useRouter();
+const queryClient = useQueryClient();
 
+const OrdersPage = () => {
   const { isLoading, error, data } = useQuery({
     queryKey: ["orders"],
+
     queryFn: () =>
       fetch("http://localhost:3000/api/orders").then((res) => res.json()),
   });
+  const { data: session, status } = useSession();
+
+  const router = useRouter();
 
   const mutation = useMutation({
     mutationFn: ({ id, status }: { id: string; status: string }) => {

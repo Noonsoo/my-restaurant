@@ -12,8 +12,7 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import { toast } from "react-toastify";
 
-const OrdersPage = () => {
-  const query = useQuery({});
+function OrdersPage() {
   const { isLoading, data } = useQuery({
     queryKey: ["orders"],
 
@@ -113,6 +112,6 @@ const OrdersPage = () => {
       </table>
     </div>
   );
-};
+}
 
 export default OrdersPage;

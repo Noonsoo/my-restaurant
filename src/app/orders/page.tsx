@@ -1,23 +1,29 @@
 "use client";
 import { OrderType } from "@/types/types";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  QueryClient,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { toast } from "react-toastify";
 
-const queryClient = useQueryClient();
+const queryClient = new QueryClient();
+
+const { isLoading, error, data } = useQuery({
+  queryKey: ["orders"],
+
+  queryFn: () =>
+    fetch("http://localhost:3000/api/orders").then((res) => res.json()),
+});
 
 const OrdersPage = () => {
-  const { isLoading, error, data } = useQuery({
-    queryKey: ["orders"],
-
-    queryFn: () =>
-      fetch("http://localhost:3000/api/orders").then((res) => res.json()),
-  });
   const { data: session, status } = useSession();
-
+  const queryClient = useQueryClient();
   const router = useRouter();
 
   const mutation = useMutation({

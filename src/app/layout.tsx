@@ -8,6 +8,7 @@ import AuthProvider from "@/components/AuthProvider";
 import QueryProvider from "@/components/QueryProvider";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,6 +16,8 @@ export const metadata: Metadata = {
   title: "Nonso's Restaurant",
   description: "Best Food in town",
 };
+
+const queryClient = new QueryClient();
 
 export default function RootLayout({
   children,
@@ -25,7 +28,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <AuthProvider>
-          <QueryProvider>
+          <QueryClientProvider client={queryClient}>
             <div>
               <Notifications />
               <Navbar />
@@ -38,7 +41,7 @@ export default function RootLayout({
                 className="toast-message"
               />
             </div>
-          </QueryProvider>
+          </QueryClientProvider>
         </AuthProvider>
       </body>
     </html>

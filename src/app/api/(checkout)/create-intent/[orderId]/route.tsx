@@ -1,43 +1,42 @@
-import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "@/utils/connect";
+import { NextRequest, NextResponse } from "next/server";
 
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
-
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
+export async function POST(
+  request: NextRequest,
+  { params }: { params: { orderId: string } }
 ) {
-  if (req.method === "POST") {
-    const { orderId } = req.query;
+  const { orderId } = params;
 
-    const order = await prisma.order.findUnique({
-      where: {
-        id: orderId as string,
+  const order = await prisma.order.findUnique({
+    where: {
+      id: orderId,
+    },
+  });
+
+  if (order) {
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: 100 * 100,
+      currency: "usd",
+      automatic_payment_methods: {
+        enabled: true,
       },
     });
 
-    if (order) {
-      const paymentIntent = await stripe.paymentIntents.create({
-        amount: 100 * 100,
-        currency: "usd",
-        automatic_payment_methods: {
-          enabled: true,
-        },
-      });
+    await prisma.order.update({
+      where: {
+        id: orderId,
+      },
+      data: { intent_id: paymentIntent.id },
+    });
 
-      await prisma.order.update({
-        where: {
-          id: orderId as string,
-        },
-        data: { intent_id: paymentIntent.id },
-      });
-
-      res.status(200).json({ clientSecret: paymentIntent.client_secret });
-    } else {
-      res.status(404).json({ message: "Order not found!" });
-    }
+    return new NextResponse(
+      JSON.stringify({ clientSecret: paymentIntent.client_secret }),
+      { status: 200 }
+    );
   } else {
-    // Handle any other HTTP methods
-    res.status(405).end(); // Method Not Allowed
+    return new NextResponse(JSON.stringify({ message: "Order not found!" }), {
+      status: 404,
+    });
   }
 }

@@ -15,7 +15,6 @@ const CartPage = () => {
   }, []);
 
   const handleCheckout = async () => {
-    "use server";
     if (!session) {
       router.push("/login");
     } else {

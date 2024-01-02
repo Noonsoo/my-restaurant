@@ -3,7 +3,7 @@ import { prisma } from "@/utils/connect";
 import { NextRequest, NextResponse } from "next/server";
 
 // FETCH ALL ORDERS
-export const GET = async (req: NextRequest) => {
+const GET = async (req: NextRequest) => {
   "use server";
   const session = await getAuthSession();
 

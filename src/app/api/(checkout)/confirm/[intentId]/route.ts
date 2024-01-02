@@ -2,7 +2,7 @@
 import { prisma } from "@/utils/connect";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function PUT(
+async function PUT(
   request: NextRequest,
   { params }: { params: { intentId: string } }
 ) {

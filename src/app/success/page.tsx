@@ -9,20 +9,22 @@ const SuccessPage = () => {
   const payment_intent = searchParams!.get("payment_intent");
 
   useEffect(() => {
-    const makeRequest = async () => {
-      try {
-        await fetch(`http://localhost:3000/api/confirm/${payment_intent}`, {
-          method: "PUT",
-        });
-        setTimeout(() => {
-          router.push("/orders");
-        }, 5000);
-      } catch (err) {
-        console.log(err);
-      }
-    };
+    if (payment_intent) {
+      const makeRequest = async () => {
+        try {
+          await fetch(`/api/confirm/${payment_intent}`, {
+            method: "PUT",
+          });
+          setTimeout(() => {
+            router.push("/orders");
+          }, 5000);
+        } catch (err) {
+          console.log(err);
+        }
+      };
 
-    makeRequest();
+      makeRequest();
+    }
   }, [payment_intent, router]);
 
   return (

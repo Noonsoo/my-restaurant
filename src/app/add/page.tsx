@@ -66,41 +66,23 @@ const AddPage = () => {
   const upload = async () => {
     const data = new FormData();
     data.append("file", file!);
-    data.append("upload_preset", "restaurant");
 
-    const res = await fetch(
-      "https://api.cloudinary.com/v1_1/ddopkgjd7/image/upload",
-      {
+    try {
+      const res = await fetch("/api/uploadImage", {
         method: "POST",
-
         body: data,
-      }
-    );
+      });
 
-    const resData = await res.json();
-    return resData.url;
+      const resData = await res.json();
+      return resData.url; // Assuming the response contains the URL to the uploaded image
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      return null;
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    try {
-      const url = await upload();
-      const res = await fetch("http://localhost:3000/api/products", {
-        method: "POST",
-        body: JSON.stringify({
-          img: url,
-          ...inputs,
-          options,
-        }),
-      });
-
-      const data = await res.json();
-
-      router.push(`/product/${data.id}`);
-    } catch (err) {
-      console.log(err);
-    }
   };
 
   const handleAddOption = (e: React.MouseEvent<HTMLButtonElement>) => {

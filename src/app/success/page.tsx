@@ -1,6 +1,5 @@
-"use server";
 import Success from "@/components/Success";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 import ConfettiExplosion from "react-confetti-explosion";
 

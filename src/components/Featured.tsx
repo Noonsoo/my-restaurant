@@ -1,3 +1,4 @@
+"use server";
 import { ProductType } from "@/types/types";
 import { useCartStore } from "@/utils/store";
 import Image from "next/image";

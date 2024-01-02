@@ -1,8 +1,11 @@
 "use server";
 import { prisma } from "@/utils/connect";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function PUT({ params }: { params: { intentId: string } }) {
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: { intentId: string } }
+) {
   "use server";
   const { intentId } = params;
 

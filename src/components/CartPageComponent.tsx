@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect } from "react";
 import { useCartStore } from "@/utils/store";
 import Image from "next/image";

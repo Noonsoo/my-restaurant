@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 // FETCH ALL ORDERS
 export const GET = async (req: NextRequest) => {
+  "use server";
   const session = await getAuthSession();
 
   if (session) {
@@ -14,7 +15,7 @@ export const GET = async (req: NextRequest) => {
       }
       const orders = await prisma.order.findMany({
         where: {
-          userEmail: session.user.email!,
+          userEmail: session?.user.email!,
         },
       });
       return new NextResponse(JSON.stringify(orders), { status: 200 });

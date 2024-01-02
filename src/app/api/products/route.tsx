@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 // FETCH ALL PRODUCTS
 export const GET = async (req: NextRequest) => {
+  "use server";
   const { searchParams } = new URL(req.url);
   const cat = searchParams.get("cat");
 

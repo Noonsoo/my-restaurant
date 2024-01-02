@@ -1,4 +1,4 @@
-"use client";
+"use server";
 import { OrderType } from "@/types/types";
 import {
   QueryClient,

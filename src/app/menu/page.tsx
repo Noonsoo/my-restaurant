@@ -3,6 +3,7 @@ import Link from "next/link";
 import React from "react";
 
 const getData = async () => {
+  "use server";
   const res = await fetch("http://localhost:3000/api/categories", {
     cache: "no-store",
   });

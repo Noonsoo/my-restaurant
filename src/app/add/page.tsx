@@ -64,6 +64,7 @@ const AddPage = () => {
   };
 
   const upload = async () => {
+    "use server";
     const data = new FormData();
     data.append("file", file!);
     data.append("upload_preset", "restaurant");

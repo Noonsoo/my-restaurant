@@ -17,6 +17,7 @@ const getData = async () => {
 };
 
 const Featured = async () => {
+  "use server";
   const featuredProducts: ProductType[] = await getData();
 
   return (

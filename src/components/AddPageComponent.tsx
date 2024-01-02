@@ -1,4 +1,4 @@
-import React from "react";
+"use server";
 import AddPageProps from "./AddPageProps";
 import { useRouter } from "next/navigation";
 
@@ -30,7 +30,6 @@ function AddPageComponent({
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    "use server";
     e.preventDefault();
 
     try {
@@ -52,7 +51,17 @@ function AddPageComponent({
     }
   };
 
-  return <AddPageProps handleSubmit={handleSubmit} />;
+  return (
+    <AddPageProps
+      changeOption={changeOption}
+      handleChange={handleChange}
+      handleChangeImg={handleChangeImg}
+      setOptions={setOptions}
+      option={option}
+      options={options}
+      handleSubmit={handleSubmit}
+    />
+  );
 }
 
 export default AddPageComponent;

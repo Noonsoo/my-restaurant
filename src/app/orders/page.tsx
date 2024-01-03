@@ -1,30 +1,29 @@
-"use server";
+"use client";
+
 import { OrderType } from "@/types/types";
-import {
-  QueryClient,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { toast } from "react-toastify";
 
-function OrdersPage() {
-  const { isLoading, data } = useQuery({
-    queryKey: ["orders"],
+const OrdersPage = () => {
+  const { data: session, status } = useSession();
 
+  const router = useRouter();
+
+  if (status === "unauthenticated") {
+    router.push("/");
+  }
+
+  const { isLoading, error, data } = useQuery({
+    queryKey: ["orders"],
     queryFn: () =>
       fetch("http://localhost:3000/api/orders").then((res) => res.json()),
   });
 
-  const { data: session, status } = useSession();
   const queryClient = useQueryClient();
-  const router = useRouter();
-
-  // Unconditionally call useQuery at the top level of the component
 
   const mutation = useMutation({
     mutationFn: ({ id, status }: { id: string; status: string }) => {
@@ -41,19 +40,6 @@ function OrdersPage() {
     },
   });
 
-  if (status === "unauthenticated") {
-    router.push("/");
-    return null; // Return null or a loading indicator while redirecting
-  }
-
-  if (!session) {
-    // If the user is not authenticated, redirect to the homepage
-    router.push("/");
-    return null; // You can also return a loading indicator or message here
-  }
-
-  if (isLoading) return "Loading...";
-
   const handleUpdate = (e: React.FormEvent<HTMLFormElement>, id: string) => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
@@ -63,6 +49,8 @@ function OrdersPage() {
     mutation.mutate({ id, status });
     toast.success("The order status has been changed!");
   };
+
+  if (isLoading || status === "loading") return "Loading...";
 
   return (
     <div className="p-4 lg:px-20 xl:px-40">
@@ -77,7 +65,7 @@ function OrdersPage() {
           </tr>
         </thead>
         <tbody>
-          {data?.map((item: OrderType) => (
+          {data.map((item: OrderType) => (
             <tr
               className={`${item.status !== "delivered" && "bg-red-50"}`}
               key={item.id}>
@@ -87,7 +75,7 @@ function OrdersPage() {
               </td>
               <td className="py-6 px-1">{item.price}</td>
               <td className="hidden md:block py-6 px-1">
-                {item.products[0]?.title}
+                {item.products[0].title}
               </td>
               {session?.user.isAdmin ? (
                 <td>
@@ -112,6 +100,6 @@ function OrdersPage() {
       </table>
     </div>
   );
-}
+};
 
 export default OrdersPage;

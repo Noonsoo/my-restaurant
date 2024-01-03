@@ -1,9 +1,6 @@
-"use server";
 import { ProductType } from "@/types/types";
-import { useCartStore } from "@/utils/store";
 import Image from "next/image";
-import Link from "next/link";
-import React, { useEffect } from "react";
+import React from "react";
 
 const getData = async () => {
   const res = await fetch("http://localhost:3000/api/products", {
@@ -41,12 +38,10 @@ const Featured = async () => {
                 {item.title}
               </h1>
               <p className="p-4 2xl:p-8">{item.desc}</p>
-              <button className="text-xl font-bold">${item.price}</button>
-              <Link
-                href={`/product/${item.id}`}
-                className="bg-red-500 text-white p-2 rounded-md">
+              <span className="text-xl font-bold">${item.price}</span>
+              <button className="bg-red-500 text-white p-2 rounded-md">
                 Add to Cart
-              </Link>
+              </button>
             </div>
           </div>
         ))}

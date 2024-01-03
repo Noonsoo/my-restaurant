@@ -19,12 +19,11 @@ const getData = async (category: string) => {
 };
 
 type Props = {
-  params: { categories: string };
+  params: { category: string };
 };
 
 const CategoryPage = async ({ params }: Props) => {
-  const products: ProductType[] = await getData(params.categories);
-
+  const products: ProductType[] = await getData(params.category);
   return (
     <div className="flex flex-wrap text-red-500">
       {products.map((item) => (

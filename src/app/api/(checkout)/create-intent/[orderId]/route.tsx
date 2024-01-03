@@ -2,7 +2,8 @@ import { prisma } from "@/utils/connect";
 import { NextRequest, NextResponse } from "next/server";
 
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
-async function POST(
+
+export async function POST(
   request: NextRequest,
   { params }: { params: { orderId: string } }
 ) {
@@ -34,9 +35,8 @@ async function POST(
       JSON.stringify({ clientSecret: paymentIntent.client_secret }),
       { status: 200 }
     );
-  } else {
-    return new NextResponse(JSON.stringify({ message: "Order not found!" }), {
-      status: 404,
-    });
   }
+  return new NextResponse(JSON.stringify({ message: "Order not found!" }), {
+    status: 404,
+  });
 }
